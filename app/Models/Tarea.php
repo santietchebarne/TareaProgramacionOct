@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\{Model, SoftDeletes, HasFactory, HasTimestamps};
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Tarea extends Model
 {
+    use HasFactory;
     protected $table = "Tarea";
 
-    use SoftDeletes, HasFactory, HasTimestamps;
 }
 

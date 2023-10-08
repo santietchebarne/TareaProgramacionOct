@@ -29,7 +29,7 @@ class TareaController extends Controller
         return response($Tarea, 201);
     }
 
-    public function Leer($idTarea) {
+    public function Listauna($idTarea) {
         $Tarea = Tarea::find($idTarea);
 
         if (!$Tarea) {
@@ -41,30 +41,32 @@ class TareaController extends Controller
 
     public function Modificar(Request $request, $idTarea){
         $Tarea = Tarea::find($idTarea);
-
+    
         if (!$Tarea) {
             return response(["Mensaje" => "La tarea no se encuentra"], 404);
         }
 
-        $validaciones = Validator::make($request->all(), [
-            "titulo" => "required",
-            "contenido" => "required",
-            "estado" => "required",
-            "autor" => "required",
-        ]);
-        
-        if ($validaciones->fails()){
-            return response(["Mensaje" => $validaciones->errors()], 400);
+        if ($request->has("titulo")) {
+            $Tarea->titulo = $request->titulo;
         }
-
-        $Tarea->titulo = $request->titulo;
-        $Tarea->contenido = $request->contenido;
-        $Tarea->estado = $request->estado;
-        $Tarea->autor = $request->autor;
+    
+        if ($request->has("contenido")) {
+            $Tarea->contenido = $request->contenido;
+        }
+    
+        if ($request->has("estado")) {
+            $Tarea->estado = $request->estado;
+        }
+    
+        if ($request->has("autor")) {
+            $Tarea->autor = $request->autor;
+        }
+    
         $Tarea->save();
-
-        return response($Tarea, 200);
+    
+        return $Tarea;
     }
+    
 
     public function Eliminar($idTarea) {
         $Tarea = Tarea::find($idTarea);
@@ -84,33 +86,53 @@ class TareaController extends Controller
     }
 
     public function ListarPorTitulo(Request $request) {
-        $Tarea = Tarea::where("titulo", $request->titulo)->get();
-
-        if ($Tarea->isEmpty()) {
-            return response(["Mensaje" => "Tareas no encontradas"], 404);
+        if ($request->has("titulo")) {
+            $titulo = $request->titulo;
+            
+            $Tarea = Tarea::where("titulo", $titulo)->get();
+    
+            if ($Tarea->isEmpty()) {
+                return response(["Mensaje" => "Ninguna tarea encontrada."], 404);
+            }
+    
+            return response($Tarea, 200);
+        } else {
+            return response(["Mensaje" => "Se debe ingresar un titulo para buscar."], 400);
         }
-
-        return response($Tarea, 200);
     }
+    
 
     public function ListarPorAutor(Request $request) {
-        $Tarea = Tarea::where("autor", $request->autor)->get();
-
-        if ($Tarea->isEmpty()) {
-            return response(["Mensaje" => "Tareas no encontradas"], 404);
+        if ($request->has("autor")) {
+            $autor = $request->autor;
+            
+            $Tarea = Tarea::where("autor", $autor)->get();
+    
+            if ($Tarea->isEmpty()) {
+                return response(["Mensaje" => "Ninguna tarea encontrada."], 404);
+            }
+    
+            return response($Tarea, 200);
+        } else {
+            return response(["Mensaje" => "Se debe ingresar un autor para buscar."], 400);
         }
-
-        return response($Tarea, 200);
     }
 
     public function ListarPorEstado(Request $request) {
-        $Tarea = Tarea::where("estado", $request->estado)->get();
-
-        if ($Tarea->isEmpty()) {
-            return response(["Mensaje" => "Tareas no encontradas"], 404);
+        if ($request->has("estado")) {
+            $estado = $request->estado;
+            
+            $Tarea = Tarea::where("estado", $estado)->get();
+    
+            if ($Tarea->isEmpty()) {
+                return response(["Mensaje" => "Ninguna tarea encontrada."], 404);
+            }
+    
+            return response($Tarea, 200);
+        } else {
+            return response(["Mensaje" => "Se debe ingresar un estado para buscar."], 400);
         }
-
-        return response($Tarea, 200);
     }
+    
 }
 

@@ -31,5 +31,15 @@ class TareaController extends Controller
         if (!$Tarea) return response(["Mensaje" =>"La tarea no se encuentra"], 400);
         return $Tarea;
     }
+    public function Modificar(Request $request,$idTarea){
+        $Tarea=Tarea::find($idTarea);
+        if (!$Tarea) return response(["Mensaje" =>"La tarea no se encuentra"], 404);
+        
+        $Validaciones= Validator::make($request->all(),[
+            "titulo"=>"required",
+            "contenido"=> "required",
+            "estado"=>"required",
+            "autor"=>"required",
+        ]);
 
 

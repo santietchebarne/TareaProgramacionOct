@@ -19,9 +19,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::controller(TareaController::class)-> group(function (){
-    Route::post("/Tarea", "Crear");
-    Route::get("/Tarea/{id}", "Leer");
-    Route::put("/Tarea", "Modificar");
-    Route::delete("/Tarea", "Eliminar");
+Route::prefix("Tarea")->group(function (){
+    Route::post("/", [TareaController::class, "Crear"]);
+    Route::delete("/{id}", [TareaController::class, 'Eliminar']);
+    Route::put("/{id}", [TareaController::class, 'Modificar']);
+    Route::get("/", [TareaController::class, 'Listar']);
+    Route::get("/Titulo", [TareaController::class, 'ListarPorTitulo']);
+    Route::get("/Autor", [TareaController::class, 'ListarPorAutor']);
+    Route::get("/Estado", [TareaController::class, 'ListarPorEstado']);
+    Route::get("/{id}", [TareaController::class, 'Leer']);
 });

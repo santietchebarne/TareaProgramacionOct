@@ -22,6 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(TareaController::class)-> group(function (){
     Route::post("/Tarea", "Crear");
     Route::get("/Tarea/{id}", "Leer");
-    Route::delete("/Tarea", "Eliminar");
     Route::put("/Tarea", "Modificar");
+    Route::delete("/Tarea", "Eliminar");
 });
